@@ -1,4 +1,4 @@
-#include <stdio.h>
+/*#include <stdio.h>
 
 #define TAMANHO 10
 #define TAM_NAVIO 3
@@ -41,10 +41,96 @@ int main() {
         } 
         printf ("\n");
     }
+        return 0;
+}*/
+
     // Nível Aventureiro - Expansão do Tabuleiro e Posicionamento Diagonal
     // Sugestão: Expanda o tabuleiro para uma matriz 10x10.
     // Sugestão: Posicione quatro navios no tabuleiro, incluindo dois na diagonal.
     // Sugestão: Exiba o tabuleiro completo no console, mostrando 0 para posições vazias e 3 para posições ocupadas.
+
+    #include <stdio.h>
+
+    #define TAM 10
+    #define TAM_NAVIO 3
+    
+    // Função para verificar se um navio pode ser posicionado
+    int pode_posicionar(int tabuleiro[TAM][TAM], int linha, int coluna, int direcao, int diagonal) {
+        for (int i = 0; i < TAM_NAVIO; i++) {
+            int l = linha, c = coluna;
+    
+            if (diagonal == 1) {        // Diagonal ↘
+                l += i;
+                c += i;
+            } else if (diagonal == 2) { // Diagonal ↙
+                l += i;
+                c -= i;
+            } else if (direcao == 0) {  // Horizontal →
+                c += i;
+            } else if (direcao == 1) {  // Vertical ↓
+                l += i;
+            }
+    
+            if (l < 0 || l >= TAM || c < 0 || c >= TAM || tabuleiro[l][c] != 0)
+                return 0; // Fora dos limites ou posição ocupada
+        }
+        return 1;
+    }
+    
+    // Função para posicionar um navio no tabuleiro
+    void posicionar_navio(int tabuleiro[TAM][TAM], int linha, int coluna, int direcao, int diagonal) {
+        for (int i = 0; i < TAM_NAVIO; i++) {
+            int l = linha, c = coluna;
+    
+            if (diagonal == 1) {
+                l += i;
+                c += i;
+            } else if (diagonal == 2) {
+                l += i;
+                c -= i;
+            } else if (direcao == 0) {
+                c += i;
+            } else if (direcao == 1) {
+                l += i;
+            }
+    
+            tabuleiro[l][c] = 3;
+        }
+    }
+    
+    // Função principal
+    int main() {
+        int tabuleiro[TAM][TAM] = {0};
+    
+        // Tentativas de posicionamento dos 4 navios
+        // Horizontal
+        if (pode_posicionar(tabuleiro, 0, 0, 0, 0))
+            posicionar_navio(tabuleiro, 0, 0, 0, 0);
+    
+        // Vertical
+        if (pode_posicionar(tabuleiro, 2, 5, 1, 0))
+            posicionar_navio(tabuleiro, 2, 5, 1, 0);
+    
+        // Diagonal ↘
+        if (pode_posicionar(tabuleiro, 4, 1, 0, 1))
+            posicionar_navio(tabuleiro, 4, 1, 0, 1);
+    
+        // Diagonal ↙
+        if (pode_posicionar(tabuleiro, 6, 9, 0, 2))
+            posicionar_navio(tabuleiro, 6, 9, 0, 2);
+    
+        // Exibir o tabuleiro
+        printf("\n##### Tabuleiro Batalha Naval #####\n\n");
+        for (int i = 0; i < TAM; i++) {
+            for (int j = 0; j < TAM; j++) {
+                printf("%d ", tabuleiro[i][j]);
+            }
+            printf("\n");
+        }
+    
+        return 0;
+    }
+
 
     // Nível Mestre - Habilidades Especiais com Matrizes
     // Sugestão: Crie matrizes para representar habilidades especiais como cone, cruz, e octaedro.
@@ -67,5 +153,4 @@ int main() {
     // 1 1 1 1 1
     // 0 0 1 0 0
 
-    return 0;
-}
+ 
