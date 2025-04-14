@@ -20,8 +20,8 @@ int main() {
     int navio2[TAM_NAVIO] = {3, 3, 3}; // Vertical
 
     // Coordenadas iniciais dos navios
-    int linha1 = 3, coluna1 = 5; // navio1 horizontal
-    int linha2 = 6, coluna2 = 8; // navio2 vertical
+    int linha1 = 7, coluna1 = 10; // navio1 horizontal
+    int linha2 = 5, coluna2 = 7; // navio2 vertical
 
     // Posicionando o navio1 horizontalmente
     for (int i = 0; i < TAM_NAVIO; i++){
