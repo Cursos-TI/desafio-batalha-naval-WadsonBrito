@@ -153,102 +153,111 @@ int main() {
     // 1 1 1 1 1
     // 0 0 1 0 0
 
-#include <stdio.h>
-
-
-
-#define TAM_TAB 10
-#define TAM_HAB 5
-
-void imprimirTabuleiro(int tabuleiro[TAM_TAB][TAM_TAB]) {
-    printf("\nBatalha Naval\n");
-    for (int i = 0; i < TAM_TAB; i++) {
-        for (int j = 0; j < TAM_TAB; j++) {
-            if (tabuleiro[i][j] == 0)
-                printf("0 ");
-            else if (tabuleiro[i][j] == 3)
-                printf("3 ");
-            else if (tabuleiro[i][j] == 5)
-                printf("5 ");
-        }
-        printf("\n");
-    }
-}
-
-// Cone apontando para baixo
-void criarCone(int cone[TAM_HAB][TAM_HAB]) {
-    for (int i = 0; i < TAM_HAB; i++) {
-        for (int j = 0; j < TAM_HAB; j++) {
-            if (j >= (TAM_HAB / 2 - i) && j <= (TAM_HAB / 2 + i))
-                cone[i][j] = 1;
-            else
-                cone[i][j] = 0;
+    #include <stdio.h>
+  
+    
+    #define TAM_TABULEIRO 10
+    #define TAM_HABILIDADE 5
+    
+    // Função para imprimir o tabuleiro com caracteres visuais
+    void imprimirTabuleiro(int tabuleiro[TAM_TABULEIRO][TAM_TABULEIRO]) {
+        for (int i = 0; i < TAM_TABULEIRO; i++) {
+            for (int j = 0; j < TAM_TABULEIRO; j++) {
+                if (tabuleiro[i][j] == 0) {
+                    printf("0 "); // Água
+                } else if (tabuleiro[i][j] == 3) {
+                    printf("3 "); // Navio
+                } else if (tabuleiro[i][j] == 5) {
+                    printf("5 "); // Habilidade
+                } else {
+                    printf("! ");
+                }
+            }
+            printf("\n");
         }
     }
-}
-
-// Cruz com origem no centro
-void criarCruz(int cruz[TAM_HAB][TAM_HAB]) {
-    for (int i = 0; i < TAM_HAB; i++) {
-        for (int j = 0; j < TAM_HAB; j++) {
-            if (i == TAM_HAB / 2 || j == TAM_HAB / 2)
-                cruz[i][j] = 1;
-            else
-                cruz[i][j] = 0;
-        }
-    }
-}
-
-// Octaedro (losango)
-void criarOctaedro(int oct[TAM_HAB][TAM_HAB]) {
-    for (int i = 0; i < TAM_HAB; i++) {
-        for (int j = 0; j < TAM_HAB; j++) {
-            if (abs(i - TAM_HAB / 2) + abs(j - TAM_HAB / 2) <= TAM_HAB / 2)
-                oct[i][j] = 1;
-            else
-                oct[i][j] = 0;
-        }
-    }
-}
-
-// Sobrepõe matriz de habilidade ao tabuleiro
-void aplicarHabilidade(int tabuleiro[TAM_TAB][TAM_TAB], int habilidade[TAM_HAB][TAM_HAB], int origemLinha, int origemColuna) {
-    for (int i = 0; i < TAM_HAB; i++) {
-        for (int j = 0; j < TAM_HAB; j++) {
-            int linhaTab = origemLinha - TAM_HAB / 2 + i;
-            int colunaTab = origemColuna - TAM_HAB / 2 + j;
-
-            if (linhaTab >= 0 && linhaTab < TAM_TAB && colunaTab >= 0 && colunaTab < TAM_TAB) {
-                if (habilidade[i][j] == 1 && tabuleiro[linhaTab][colunaTab] != 3)
-                    tabuleiro[linhaTab][colunaTab] = 5;
+    
+    // Função para gerar uma matriz em forma de cone
+    void gerarCone(int habilidade[TAM_HABILIDADE][TAM_HABILIDADE]) {
+        for (int i = 0; i < TAM_HABILIDADE; i++) {
+            for (int j = 0; j < TAM_HABILIDADE; j++) {
+                if (j >= (TAM_HABILIDADE / 2 - i) && j <= (TAM_HABILIDADE / 2 + i)) {
+                    habilidade[i][j] = 1;
+                } else {
+                    habilidade[i][j] = 0;
+                }
             }
         }
     }
-}
-
-int main() {
-    int tabuleiro[TAM_TAB][TAM_TAB] = {0};
-
-    // Coloca navios manualmente
-    tabuleiro[2][2] = 3;
-    tabuleiro[4][4] = 3;
-    tabuleiro[6][6] = 3;
-
-    int cone[TAM_HAB][TAM_HAB];
-    int cruz[TAM_HAB][TAM_HAB];
-    int octaedro[TAM_HAB][TAM_HAB];
-
-    criarCone(cone);
-    criarCruz(cruz);
-    criarOctaedro(octaedro);
-
-    aplicarHabilidade(tabuleiro, cone, 2, 2);       // Aplicando cone na posição (2,2)
-    aplicarHabilidade(tabuleiro, cruz, 4, 4);       // Cruz no centro (4,4)
-    aplicarHabilidade(tabuleiro, octaedro, 7, 7);   // Octaedro em (7,7)
-
-    imprimirTabuleiro(tabuleiro);
-
-    return 0;
-}
-
- 
+    
+    // Função para gerar matriz em cruz
+    void gerarCruz(int habilidade[TAM_HABILIDADE][TAM_HABILIDADE]) {
+        for (int i = 0; i < TAM_HABILIDADE; i++) {
+            for (int j = 0; j < TAM_HABILIDADE; j++) {
+                if (i == TAM_HABILIDADE / 2 || j == TAM_HABILIDADE / 2) {
+                    habilidade[i][j] = 1;
+                } else {
+                    habilidade[i][j] = 0;
+                }
+            }
+        }
+    }
+    
+    // Função para gerar matriz de octaedro (losango)
+    void gerarOctaedro(int habilidade[TAM_HABILIDADE][TAM_HABILIDADE]) {
+        for (int i = 0; i < TAM_HABILIDADE; i++) {
+            for (int j = 0; j < TAM_HABILIDADE; j++) {
+                if (abs(i - TAM_HABILIDADE / 2) + abs(j - TAM_HABILIDADE / 2) <= TAM_HABILIDADE / 2) {
+                    habilidade[i][j] = 1;
+                } else {
+                    habilidade[i][j] = 0;
+                }
+            }
+        }
+    }
+    
+    // Função para aplicar a habilidade no tabuleiro
+    void aplicarHabilidade(int tabuleiro[TAM_TABULEIRO][TAM_TABULEIRO], int habilidade[TAM_HABILIDADE][TAM_HABILIDADE], int origem_linha, int origem_coluna) {
+        for (int i = 0; i < TAM_HABILIDADE; i++) {
+            for (int j = 0; j < TAM_HABILIDADE; j++) {
+                int linha = origem_linha - TAM_HABILIDADE / 2 + i;
+                int coluna = origem_coluna - TAM_HABILIDADE / 2 + j;
+    
+                if (linha >= 0 && linha < TAM_TABULEIRO && coluna >= 0 && coluna < TAM_TABULEIRO) {
+                    if (habilidade[i][j] == 1 && tabuleiro[linha][coluna] != 3) {
+                        tabuleiro[linha][coluna] = 5;
+                    }
+                }
+            }
+        }
+    }
+    
+    int main() {
+        int tabuleiro[TAM_TABULEIRO][TAM_TABULEIRO];
+        memset(tabuleiro, 0, sizeof(tabuleiro)); // Iniciar com água
+    
+        // Adicionar alguns navios manualmente
+        tabuleiro[2][2] = 3;
+        tabuleiro[2][3] = 3;
+        tabuleiro[3][2] = 3;
+    
+        // Matrizes de habilidades
+        int cone[TAM_HABILIDADE][TAM_HABILIDADE];
+        int cruz[TAM_HABILIDADE][TAM_HABILIDADE];
+        int octaedro[TAM_HABILIDADE][TAM_HABILIDADE];
+    
+        // Gerar as formas
+        gerarCone(cone);
+        gerarCruz(cruz);
+        gerarOctaedro(octaedro);
+    
+        // Aplicar habilidades
+        aplicarHabilidade(tabuleiro, cone, 4, 4);
+        aplicarHabilidade(tabuleiro, cruz, 6, 6);
+        aplicarHabilidade(tabuleiro, octaedro, 2, 7);
+    
+        // Exibir o tabuleiro
+        imprimirTabuleiro(tabuleiro);
+    
+        return 0;
+    }
